@@ -14,16 +14,27 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# Support env variables from .env file if defined
+import os
+from dotenv import load_dotenv
 
+env_path = load_dotenv(os.path.join(BASE_DIR, ".env"))
+load_dotenv(env_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "t5=1p!vp2l7oq%4^(eiqsqp3-cfghyl#=wtypw8)@^+5k+oo@&"
+# SECRET_KEY = "t5=1p!vp2l7oq%4^(eiqsqp3-cfghyl#=wtypw8)@^+5k+oo@&"
+import os
 
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "t5=1p!vp2l7oq%4^(eiqsqp3-cfghyl#=wtypw8)@^+5k+oo@&",
+)
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -47,6 +58,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -125,7 +137,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+import dj_database_url
+
+if "DATABASE_URL" in os.environ:
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=500,
+        conn_health_checks=True,
+    )
+
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 import os 
 from dotenv import load_dotenv

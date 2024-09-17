@@ -1,0 +1,147 @@
+/* General Styles */
+body {
+    display: flex;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+#content {
+    width: 70%;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#sidebar {
+    width: 25%;
+    margin: 20px;
+    /* float: left; */
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #333;
+}
+
+h1 {
+    font-size: 2em;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.date {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+li {
+    /* list-style: none; */
+    list-style:circle;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    #content, #sidebar {
+        width: 100%;
+        float: none;
+        padding: 10px;
+    }
+
+    #sidebar {
+        margin-top: 20px;
+    }
+}
+
+/* Form Styles */
+/* .shareDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:2px solid black
+} */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 50px;
+    margin-bottom: 20px;
+}
+
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form textarea {
+    display: flex;
+    width: 50%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+form input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 50%;
+}
+
+form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Error Message Styling (optional, if you have error messages in your form) */
+.errorlist {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.errorlist li {
+    margin-left: 20px;
+}
+
+/* Form-specific media queries */
+@media (max-width: 768px) {
+    form input[type="submit"] {
+        width: 100%;
+    }
+}
