@@ -117,6 +117,7 @@ def post_share(request, post_id):
 
 
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import TrigramSimilarity
 
 def post_search(request):
     form = SearchForm()
@@ -138,6 +139,16 @@ def post_search(request):
             #     Post.published.annotate(rank=SearchRank(search_vector, search_query))
             #     .filter(rank__gte=0.3)
             #     .order_by("-rank")
+            # )
+
+            # results = (
+            #     Post.published.annotate(
+            #         similarity=TrigramSimilarity("title", query),
+            #         # search=search_vector,
+            #         # rank = SearchRank('search_vector', 'search_query'),
+            #     )
+            #     .filter(similarity__gt=0.1)
+            #     .order_by("-similarity")
             # )
 
     return render(request,'blog/post/search.html',
