@@ -58,7 +58,8 @@ a:hover {
 }
 
 li {
-    list-style: none;
+    /* list-style: none; */
+    list-style:circle;
     margin-bottom: 10px;
 }
 

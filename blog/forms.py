@@ -9,9 +9,13 @@ class EmailPostForm(forms.Form):
 
 from .models import Comment
 
-#it is model based form
+# it is model based form
 class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
         fields = ('name', 'email', 'body')
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()
