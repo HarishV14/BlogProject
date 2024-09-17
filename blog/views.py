@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
-from django.core.paginator import Paginator, EmptyPage,\
- PageNotAnInteger
+from django.core.paginator import Paginator, EmptyPage,PageNotAnInteger
 
 """ Class based view --- generic view
 HTTP methods, such as GET, POST, or PUT, in
@@ -22,24 +21,31 @@ class PostListView(ListView):
     paginate_by = 2
     template_name = "blog/post/list.html"
 
+from taggit.models import Tag
+
+
 # function based view
-def post_list(request):
+def post_list(request, tag_slug=None):
     posts = Post.published.all()
-    paginator = Paginator(posts, 1) # 1 posts in each page
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        posts = posts.filter(tags__in=[tag])
+    paginator = Paginator(posts, 2) # 1 posts in each page
     page = request.GET.get('page')
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
-    # If page is not an integer deliver the first page
+        # If page is not an integer deliver the first page
         posts = paginator.page(1)
     except EmptyPage:
-    # If page is out of range deliver last page of results
+        # If page is out of range deliver last page of results
         posts = paginator.page(paginator.num_pages)
 
     return render(request,
-        'blog/post/list.html',{'page': page,'posts': posts})
+        'blog/post/list.html',{'page': page,'posts': posts,'tag':tag})
 
-
+from django.db.models import Count
 def post_detail(request, year, month, day, post):
     post = get_object_or_404(
         Post,
@@ -49,6 +55,12 @@ def post_detail(request, year, month, day, post):
         publish__month=month,
         publish__day=day,
     )
+    # List of similar posts
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count("tags")).order_by(
+        "-same_tags", "-publish"
+    )[:4]
     # List of active comments for this post
     comments = post.comments.filter(active=True)
     new_comment = None
@@ -72,6 +84,7 @@ def post_detail(request, year, month, day, post):
             "comments": comments,
             "new_comment": new_comment,
             "comment_form": comment_form,
+            "similar_posts": similar_posts,
         },
     )
 

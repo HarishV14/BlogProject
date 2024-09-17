@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from taggit.managers import TaggableManager
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -23,6 +24,8 @@ class Post(models.Model):
     status = models.CharField(max_length=10,choices=STATUS_CHOICES,default='draft')
     objects = models.Manager() # The default manager.
     published = PublishedManager() # Our custom manager.
+    tags = TaggableManager()
+
     class Meta:
         ordering = ('-publish',)
     def __str__(self):
@@ -45,4 +48,3 @@ class Comment(models.Model):
         
     def __str__(self):
         return f'Comment by {self.name} on {self.post}'
-    
