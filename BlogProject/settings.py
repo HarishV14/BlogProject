@@ -34,7 +34,7 @@ SECRET_KEY = os.environ.get(
 )
 DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -159,7 +159,7 @@ STORAGES = {
     },
 }
 
-import os 
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
